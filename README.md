@@ -195,7 +195,7 @@ As correlações são muito próximas de zero.
   Male             2.897        70,25         5,20        69,29        64,28
 
   Other              234        69,71         5,03        68,79        65,30
-  --------------------------------------------------------------------------
+
 
 A diferença entre a maior e a menor média foi 0,54 ponto. A análise é descritiva e não permite atribuir causalidade ao gênero.
 
