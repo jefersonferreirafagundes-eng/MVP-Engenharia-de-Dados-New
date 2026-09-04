@@ -221,6 +221,3 @@ A análise é observacional e baseada predominantemente em correlações lineare
 # Trabalhos futuros
 
 Uma evolução do projeto pode incorporar novas fontes educacionais, dados longitudinais e variáveis adicionais devidamente anonimizadas, permitindo analisar dimensões não representadas no conjunto atual. Também podem ser investigadas relações não lineares e interações entre variáveis, além da inclusão de testes automatizados de qualidade e de um pipeline incremental para cenários com atualização contínua. Modelos preditivos podem ser acrescentados em uma etapa posterior, desde que se mantenha explícita a distinção entre capacidade de predição, associação estatística e evidência causal. Essa evolução permitiria avaliar se combinações de atributos oferecem informação que não aparece nas correlações individuais observadas neste MVP.
-
-
-Essas imagens devem ser referenciadas no README ou no documento final de entrega.
