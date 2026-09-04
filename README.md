@@ -1,4 +1,5 @@
-# MVP de Engenharia de Dados --- Fatores associados à nota final dos estudantes
+# MVP de Engenharia de Dados 
+# Fatores associados à nota final dos estudantes
 
 ## Visão geral
 
@@ -7,11 +8,7 @@ Python/PySpark, Delta Lake e Unity Catalog. O objetivo é investigar
 quais características de rotina, estudo, frequência, foco e uso de
 tecnologia apresentam associação com `final_grade`.
 
-> Correlação não demonstra causalidade. Os resultados deste MVP não
-> permitem afirmar que uma variável causa aumento ou redução da nota.
-
-# 1. Contexto de Negócio e Perguntas (Etapa 2 e 4.1)
-
+# 1. Contexto de Negócio e Perguntas 
 ## Problema
 
 Investigar se as variáveis disponíveis apresentam associação com a nota
@@ -42,21 +39,20 @@ nome, a leitura efetiva retornou 5.999 registros.
 
 ## Fonte e licença
 
-**Pendente antes da entrega:** inserir a URL exata da página original do
-dataset e a licença informada pela fonte. Não foi possível verificar a
-licença apenas a partir do CSV carregado.
+Dataset: Student Productivity & Distraction Dataset, extraído da Kaggle.
+Fonte: https://raw.githubusercontent.com/jefersonferreirafagundes-eng/MVP-ML-Analytics/refs/heads/main/student_productivity_distraction_dataset_20000.csv
+Carga no Databricks em: /Volumes/workspace/mvp_raw/input_files/student_productivity_distraction_dataset_20000.csv
 
-# 2. Carga dos Dados (Etapa 4.2)
+# 2. Carga dos Dados 
 
-A execução foi realizada no Databricks Free Edition. Foi criado o
-Managed Volume `/Volumes/workspace/mvp_raw/input_files`, onde o CSV
+A execução foi realizada no Databricks Free Edition. Foi criado o Managed Volume `/Volumes/workspace/mvp_raw/input_files`, onde o CSV
 original foi carregado.
 
 Fluxo: `CSV → Unity Catalog Volume → Bronze`
 
 Bronze: `workspace.mvp_bronze.student_productivity_raw`.
 
-# 3. Modelagem e Catálogo de Dados (Etapa 4.3)
+# 3. Modelagem e Catálogo de Dados 
 
 Foi utilizada a Arquitetura Medalhão: `Raw → Bronze → Silver → Gold`.
 
@@ -66,16 +62,14 @@ Foi utilizada a Arquitetura Medalhão: `Raw → Bronze → Silver → Gold`.
 
 ## Bronze
 
-`workspace.mvp_bronze.student_productivity_raw` --- preservação do dado
-recebido e metadados de ingestão.
+`workspace.mvp_bronze.student_productivity_raw` --- preservação do dado recebido e metadados de ingestão.
 
 ## Silver
 
 -   `workspace.mvp_silver.student_productivity_clean`
 -   `workspace.mvp_silver.data_quality_summary`
 
-Responsabilidades: tipagem, padronização, qualidade e criação de
-`entertainment_hours`.
+Responsabilidades: tipagem, padronização, qualidade e criação de `entertainment_hours`.
 
 ## Gold
 
@@ -83,13 +77,11 @@ Responsabilidades: tipagem, padronização, qualidade e criação de
 -   `workspace.mvp_gold.correlation_with_final_grade`
 -   `workspace.mvp_gold.performance_by_gender`
 
-Foi adotado modelo flat por conceito, com um registro por estudante na
-tabela analítica principal.
+Foi adotado modelo flat por conceito, com um registro por estudante na tabela analítica principal.
 
 ## Catálogo
 
-As tabelas e campos foram documentados no Unity Catalog com descrição,
-tipo e domínio observado. Exemplos:
+As tabelas e campos foram documentados no Unity Catalog com descrição,tipo e domínio observado. Exemplos:
 
   Campo                   Tipo     Domínio observado
   ----------------------- -------- ---------------------
@@ -110,11 +102,10 @@ tipo e domínio observado. Exemplos:
 
 ## Linhagem
 
-O Unity Catalog registrou
-`workspace.mvp_silver.student_productivity_clean → workspace.mvp_gold.student_performance`,
+O Unity Catalog registrou `workspace.mvp_silver.student_productivity_clean → workspace.mvp_gold.student_performance`,
 incluindo o notebook `03_gold_analysis` como parte do processo.
 
-# 4. Pipeline de Dados (Etapa 4.4)
+# 4. Pipeline de Dados
 
 -   `00_setup`: criação dos schemas Raw/Bronze/Silver/Gold.
 -   `01_bronze_ingestion`: leitura do CSV, validação inicial, metadados
@@ -125,14 +116,13 @@ incluindo o notebook `03_gold_analysis` como parte do processo.
     gênero.
 -   `04_catalog_lineage`: documentação no Unity Catalog.
 
-# 5. Qualidade de Dados (Etapa 4.5)
+# 5. Qualidade de Dados 
 
 Foram analisados os 18 atributos originais.
 
 ## Completude
 
-Todos os 18 atributos apresentaram **0 valores nulos (0%)** nos 5.999
-registros. Não foi necessária imputação.
+Todos os 18 atributos apresentaram **0 valores nulos (0%)** nos 5.999 registros. Não foi necessária imputação.
 
 ## Unicidade
 
@@ -142,15 +132,14 @@ registros. Não foi necessária imputação.
 
 ## Consistência
 
-Foram examinados mínimos e máximos. Nas verificações realizadas, não
-foram identificados valores fora dos limites estruturais avaliados que
+Foram examinados mínimos e máximos. Nas verificações realizadas, não foram identificados valores fora dos limites estruturais avaliados que
 justificassem exclusão automática.
 
 ## Variável derivada
 
 `entertainment_hours = social_media_hours + youtube_hours + gaming_hours`.
 
-# 6. Análise de Dados (Etapa 4.5)
+# 6. Análise de Dados 
 
 ## Pergunta 1 --- maior associação com a nota
 
@@ -167,8 +156,7 @@ justificassem exclusão automática.
           9 focus_score                  -0,0098
          10 age                          +0,0094
 
-A maior correlação absoluta foi 0,0379. Portanto, nenhuma variável
-analisada apresentou associação linear relevante com `final_grade`.
+A maior correlação absoluta foi 0,0379. Portanto, nenhuma variável analisada apresentou associação linear relevante com `final_grade`.
 
 ## Pergunta 2 --- estudo, frequência, foco e atividades
 
@@ -209,108 +197,30 @@ As correlações são muito próximas de zero.
   Other              234        69,71         5,03        68,79        65,30
   --------------------------------------------------------------------------
 
-A diferença entre a maior e a menor média foi 0,54 ponto. A análise é
-descritiva e não permite atribuir causalidade ao gênero.
+A diferença entre a maior e a menor média foi 0,54 ponto. A análise é descritiva e não permite atribuir causalidade ao gênero.
 
 ## Discussão geral
 
-Nos 5.999 registros, as variáveis disponíveis apresentam correlações
-lineares muito baixas com a nota final. O resultado indica que, neste
-dataset, as variáveis analisadas isoladamente não apresentam associação
-linear relevante com o desempenho final.
+Nos 5.999 registros, as variáveis disponíveis apresentam correlações lineares muito baixas com a nota final. O resultado indica que, neste
+dataset, as variáveis analisadas isoladamente não apresentam associação linear relevante com o desempenho final.
 
 # 7. Autoavaliação
 
-## Objetivos atingidos
+# Objetivos atingidos
 
-O MVP construiu pipeline em nuvem, Arquitetura Medalhão, tabelas Delta,
-catálogo, qualidade, linhagem e análises voltadas às perguntas
-originais.
+o MVP implementou um pipeline de engenharia de dados em ambiente de nuvem no Databricks Free Edition, estruturado segundo a Arquitetura Medalhão. Foram criadas e persistidas tabelas Delta nas camadas Bronze, Silver e Gold, realizadas verificações de qualidade, documentados ativos no Unity Catalog, registrada a linhagem Silver → Gold e produzidas análises diretamente relacionadas às perguntas definidas no contexto de negócio. Dessa forma, o trabalho não se limitou ao cálculo de correlações: ele demonstrou o ciclo de ingestão, tratamento, governança, rastreabilidade e disponibilização analítica dos dados.
 
-## Dificuldades
+# Dificuldades
 
-Foram necessários ajustes específicos do Databricks/Unity Catalog para
-metadados de origem. Também foi necessário verificar a quantidade real
-de registros, pois o nome do arquivo sugeria 20.000, enquanto a leitura
-retornou 5.999.
+A implementação exigiu ajustes específicos do Databricks e do Unity Catalog, principalmente na organização dos metadados de origem e na estruturação dos ativos entre volumes, schemas e tabelas. Outro ponto relevante foi a quantidade efetivamente lida: embora o nome do arquivo contenha a referência a 20.000 registros, a execução utilizada no MVP retornou 5.999. Por esse motivo, todas as métricas de qualidade e análises deste relatório foram apresentadas com base nos 5.999 registros efetivamente processados, evitando assumir uma quantidade não confirmada pela execução.
 
-## Limitações
+# Limitações
 
-A análise é observacional; correlação não demonstra causalidade; as
-associações lineares são muito baixas; e a fonte/licença original ainda
-precisa ser documentada antes da entrega.
+A análise é observacional e baseada predominantemente em correlações lineares. Correlação não demonstra causalidade, e os coeficientes encontrados foram muito baixos. Além disso, os resultados dependem das variáveis existentes no dataset e da forma como elas foram coletadas e representadas. O MVP não testa mecanismos causais, não acompanha os mesmos estudantes longitudinalmente e não permite concluir que alterações em hábitos específicos produziriam mudanças na nota final. Consequentemente, as conclusões devem ser interpretadas como evidências descritivas e associativas restritas a este conjunto de dados.
 
-## Trabalhos futuros
+# Trabalhos futuros
 
-Adicionar novas fontes educacionais, dados longitudinais, novas
-variáveis adequadamente anonimizadas, relações não lineares, testes
-automatizados de qualidade, pipeline incremental e modelos preditivos,
-mantendo distinção entre predição, associação e causalidade.
+Uma evolução do projeto pode incorporar novas fontes educacionais, dados longitudinais e variáveis adicionais devidamente anonimizadas, permitindo analisar dimensões não representadas no conjunto atual. Também podem ser investigadas relações não lineares e interações entre variáveis, além da inclusão de testes automatizados de qualidade e de um pipeline incremental para cenários com atualização contínua. Modelos preditivos podem ser acrescentados em uma etapa posterior, desde que se mantenha explícita a distinção entre capacidade de predição, associação estatística e evidência causal. Essa evolução permitiria avaliar se combinações de atributos oferecem informação que não aparece nas correlações individuais observadas neste MVP.
 
-# 8. Estrutura recomendada do repositório
-
-``` text
-MVP-Engenharia-Dados/
-├── README.md
-├── notebooks/
-│   ├── 00_setup.py
-│   ├── 01_bronze_ingestion.py
-│   ├── 02_silver_quality.py
-│   ├── 03_gold_analysis.py
-│   └── 04_catalog_lineage.py
-└── images/
-    ├── 01_volume_csv.png
-    ├── 02_bronze.png
-    ├── 03_silver.png
-    ├── 04_gold.png
-    ├── 05_data_quality.png
-    ├── 06_catalog.png
-    ├── 07_lineage.png
-    ├── 08_correlations.png
-    └── 09_gender_analysis.png
-```
-
-# 9. Como executar
-
-1.  `00_setup`
-2.  upload do CSV ao Volume
-3.  `01_bronze_ingestion`
-4.  `02_silver_quality`
-5.  `03_gold_analysis`
-6.  `04_catalog_lineage`
-
-Tecnologias: Databricks Free Edition, Python/PySpark, Apache Spark,
-Delta Lake, Unity Catalog e Serverless.
-
-# 10. Checklist antes da entrega
-
--   [x] Pipeline em plataforma de nuvem
--   [x] Raw/Bronze/Silver/Gold
--   [x] Tabelas Delta persistidas
--   [x] Qualidade de dados
--   [x] Catálogo
--   [x] Linhagem
--   [x] Perguntas respondidas
--   [ ] URL e licença original do dataset
--   [ ] Exportar notebooks para GitHub
--   [ ] Adicionar screenshots ao repositório
--   [ ] Revisar autoavaliação final
-
-
-# 11. Screenshots da execução
-
-A pasta `images/` deve conter as principais evidências visuais exigidas na entrega.
-
-Sugestão de nomes:
-
-- `01_volume_csv.png`
-- `02_bronze.png`
-- `03_silver.png`
-- `04_gold.png`
-- `05_data_quality.png`
-- `06_catalog.png`
-- `07_lineage.png`
-- `08_correlations.png`
-- `09_gender_analysis.png`
 
 Essas imagens devem ser referenciadas no README ou no documento final de entrega.
